@@ -17,16 +17,17 @@ for iter = 1:num_iters
     %       of the cost function (computeCost) and gradient here.
     %
 
-    disp('before'), disp(theta);
+    predictions = X*theta;
+    errors = predictions - y;
+
+    feta0 = sum(1/m * errors);
+    feta1 = sum(1/m * errors .* X(:,2));
+
+    temp1 = theta(1) - (alpha * feta0);
+    temp2 = theta(2) - (alpha * feta1);
     
-    disp('J before'), disp(computeCost(X, y, theta));
-    
-    d = length(theta);
-    
-    theta = theta - alpha * computeCost(X, y, theta);
-    
-    disp('after'), disp(theta);
-    disp('J after'), disp(computeCost(X, y, theta));
+    theta(1) = temp1;
+    theta(2) = temp2;
 
     % ============================================================
 
