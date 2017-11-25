@@ -106,6 +106,10 @@ fprintf('\n');
 % not need to be normalized.
 price = 0; % You should change this
 
+valueToPredict = featureNormalize([1650,3]);
+valueToPredict = [1, valueToPredict];
+
+price = valueToPredict*theta;
 
 % ============================================================
 
