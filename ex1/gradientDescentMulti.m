@@ -18,14 +18,13 @@ for iter = 1:num_iters
     %
 
 
+    predictions = X*theta;
+    errors = predictions - y;
 
+    deviation = sum(1/m * errors .* X);
 
-
-
-
-
-
-
+    theta = theta - alpha * deviation';
+    
 
     % ============================================================
 
