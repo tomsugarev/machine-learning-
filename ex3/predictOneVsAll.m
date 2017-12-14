@@ -31,9 +31,19 @@ X = [ones(m, 1) X];
 %       
 
 
+[_,j] = max(all_theta * X');
+p = j';
 
-
-
+% For all examples
+%for i=1:m
+%  sv = zeros(num_labels, 1);
+%  % Try each training set
+%  for j=1:length(all_theta(:,1));
+%    sv(j) = sum(X(i,:) .* all_theta(j,:));
+%  end
+%  [_, index] = max(sv);
+%  p(i) = index;
+%end
 
 
 % =========================================================================
