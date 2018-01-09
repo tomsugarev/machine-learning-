@@ -62,21 +62,57 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
+function x = recode(v);
+  I = eye(max(v));
+  x = I(v,:);
+end
+
+% Predict to get H0(x) = h2 forward prop
+h1 = sigmoid([ones(m, 1) X] * Theta1');
+h2 = sigmoid([ones(m, 1) h1] * Theta2');
+
+% Change 5 to [0;0;0;0;1]
+y = recode(y);
 
 
+ts1 = Theta1 .^2;
+ts2 = Theta2 .^2;
+
+%Remove bias units 
+ts1(:,1) = [];
+ts2(:,1) = [];
+
+% Regulaisation value
+reg = lambda / (2*m) * (sum(sum(ts1)) + sum(sum(ts2)));
+
+% Cost value
+J = (1/m) * sum(dot(-y, log(h2)) - dot((1-y), log(1-h2))) + reg;
+
+% Back propagation
 
 
+for i=1:m
 
+  % forward pass
+  a1 = X(i,:);
+  a1 = [1,a1];
+  z2 = Theta1 * a1';
+  a2 = sigmoid(z2);
+  a2 = [1;a2];
+  z3 = Theta2*a2;
+  a3 = sigmoid(z3);
 
-
-
-
-
-
-
-
-
-
+  % backprop
+  delta3 = a3-y(i,:)';
+  delta2 = (Theta2'*delta3).*[1; sigmoidGradient(z2)];
+  delta2 = delta2(2:end);
+ 
+  Theta1_grad = Theta1_grad + delta2*a1;
+  Theta2_grad = Theta2_grad + delta3*a2';
+end
+ 
+Theta1_grad = (1/m)*Theta1_grad+(lambda/m)*[zeros(size(Theta1, 1), 1) Theta1(:,2:end)];
+Theta2_grad = (1/m)*Theta2_grad+(lambda/m)*[zeros(size(Theta2, 1), 1) Theta2(:,2:end)];
 
 
 
